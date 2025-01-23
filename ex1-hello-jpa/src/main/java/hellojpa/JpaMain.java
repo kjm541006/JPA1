@@ -14,21 +14,12 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Member member = new Member();
-            member.setId(100L);
-            member.setName("HelloJPA");
-
+            Member member = new Member(150L, "A");
             em.persist(member);
 
-            Member findMember = em.find(Member.class, 100L);
-            // 커밋 전 조회 가능
-            System.out.println("findMember.Id = " + findMember.getId());
-            System.out.println("findMember.Name = " + findMember.getName());
-            
-            Member findMember2 = em.find(Member.class, 100L);
-            // 영속 엔티티의 동일성 보장
-            boolean checkSameEntity = findMember == findMember2;
-            System.out.println("checkSameEntity = " + checkSameEntity);
+            member.setName("ZZZ");
+
+            System.out.println("member.getName() = " + member.getName());
 
             tx.commit();
         } catch(Exception e){
