@@ -14,25 +14,19 @@ public class JpaMain {
         tx.begin();
 
         try{
-            // 1차 캐시에 없으면 db에서 조회함
-            Member member = em.find(Member.class, 160L);
-            member.setName("AAA");
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
 
-            System.out.println("===============");
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setTeam(team);
+            em.persist(member);
 
-            // select문 실행 x , 영속성 컨텍스트에서 조회
-            Member member2 = em.find(Member.class, 160L);
-            member2.setName("BBB");
+            Member findMember = em.find(Member.class, member.getId());
 
-            System.out.println("===============");
+            Team findTeam = findMember.getTeam();
 
-            // 영속성 컨텍스트 완전 초기화
-            em.clear();
-
-            // select문 실행, db에서 조회
-            Member member3 = em.find(Member.class, 160L);
-
-            System.out.println("===============");
             tx.commit();
         } catch(Exception e){
             tx.rollback();
